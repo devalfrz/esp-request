@@ -218,6 +218,7 @@ static int nossl_read(request_t *req, char *buffer, int len)
         ret = read(req->socket, ws_buffer, len + MAX_WEBSOCKET_HEADER_SIZE);
         ret = ws_unesc(ws_buffer, (unsigned char *)buffer, ret);
         free(ws_buffer);
+        if(ret == -1) ret = 0;
     } else {
         ret = read(req->socket, buffer, len);
     }
@@ -696,7 +697,7 @@ int req_perform(request_t *req)
         }
     } while(1);
     if(req->protocol == PROTOCOL_HTTP) {
-        req->_close(req);
+        //req->_close(req);
     }
     return req->response->status_code;
 }
